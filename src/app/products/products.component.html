@@ -1,0 +1,54 @@
+<div class="container-fluid">
+  <nav class="navbar navbar-expand-sm bg-d">
+    <a class="navbar-brand" style="font-size: xx-large">Product Details</a>
+  </nav>
+</div>
+<div class="container">
+  <div class="row end-xs mt-1">
+    <div class="col-xs-12">
+      <input type="text" class="search-input" placeholder="Search Products" [(ngModel)]=" filterString"
+        (keyup)="filterProducts()">
+        <a routerLink="/products/add" mat-raised-button color="primary" class="ml-1">Add Product</a>
+        <a routerLink="/login" mat-raised-button color="warn" class="ml-1" (click)="logout()">Logout</a>
+    </div>
+  </div>
+  <div class="mt-1 mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" class="">
+
+      <ng-container matColumnDef="productName">
+        <th mat-header-cell *matHeaderCellDef> Product Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.productName}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="cost">
+        <th mat-header-cell *matHeaderCellDef> Cost </th>
+        <td mat-cell *matCellDef="let element"> {{element.cost}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="quantity">
+        <th mat-header-cell *matHeaderCellDef> Quantity </th>
+        <td mat-cell *matCellDef="let element"> {{element.quantity}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="companyName">
+        <th mat-header-cell *matHeaderCellDef> Comapny Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.companyName}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let element"> <a [routerLink]="['/products', element.id]">
+            <mat-icon color="primary">edit</mat-icon>
+          </a> </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page">
+    </mat-paginator>
+
+  </div>
+
+</div>

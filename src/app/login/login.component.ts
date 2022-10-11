@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -8,25 +11,44 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  isUserValid: boolean = false;
+  constructor(private loginAuth: AuthService, private router: Router, private snackbar: MatSnackBar) { }
 
   ngOnInit(): void {
   }
 
-  loginForm=new FormGroup({
-    Username: new FormControl("",[Validators.required,Validators.minLength(4), Validators.maxLength(20),Validators.pattern("[a-zA-Z].*")]),
-    Password: new FormControl("",[Validators.required,Validators.minLength(5)])
+  loginForm: FormGroup = new FormGroup({
+    Email: new FormControl("", [Validators.required, Validators.email]),
+    Password: new FormControl("", [Validators.required, Validators.minLength(5)])
   });
 
-  loginSubmitted(){
-    console.log(this.loginForm);
+  loginSubmitted() {
+    this.loginAuth.loginUser([this.loginForm.value.Email,
+    this.loginForm.value.Password])
+      .subscribe(res => {
+        if (res == 'Failure') {
+          this.isUserValid = false;
+          this.snackbar.open('Incorrect Email or Password', undefined, {
+            duration: 2000
+          });
+        }
+        else {
+          this.isUserValid = true;
+          this.loginAuth.setToken(res);
+          this.snackbar.open('Login Successful', undefined, {
+            duration: 2000
+          });
+          setTimeout(() => {
+            this.router.navigateByUrl('/products');
+          }, 2000);
+        }
+      })
   }
 
-
-  get username(): FormControl{
-    return this.loginForm.get("Username") as FormControl;
+  get email(): FormControl {
+    return this.loginForm.get("Email") as FormControl;
   }
-  get password(): FormControl{
+  get password(): FormControl {
     return this.loginForm.get("Password") as FormControl;
   }
 }
