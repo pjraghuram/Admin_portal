@@ -1,3 +1,5 @@
+<p class="text-center fs-3" [ngClass]="isAccountCreated ? 'text-success pb-1' : 'text-danger pb-1'">
+{{displayMsg}}</p>
 <div class="container mt-5 mb-5">
 <form [formGroup]="registerform" (ngSubmit)="registersubmit()" class="border p-3" style="border-radius: 20px; color: #000;">
     <div class="row">
@@ -124,7 +126,7 @@
         <div class="col-mb-3 mt-3">
             <label for="PAN" class="form-label">PAN Number</label>
             <input type="text" class="form-control" id="PAN" formControlName="PAN">
-            <div class="form-text text-danger"
+            <!-- <div class="form-text text-danger"
             *ngIf="pan.errors?.['required'] && (pan.touched || pan.dirty)">
             PAN Number is Required
             </div>
@@ -139,7 +141,7 @@
             <div class="form-text text-danger"
             *ngIf="pan.errors?.['pattern'] && (pan.touched || pan.dirty)">
             PAN Number should be in correct format(ABCDE1234G)
-            </div>
+            </div> -->
         </div>
     </div>
     <div class="row">
